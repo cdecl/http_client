@@ -54,13 +54,20 @@ namespace GLASS {
 	{
 	private:
 		http_parser() {}
+		http_parser(const http_parser &p);
 
 	public:
-		http_parser(http_parser &&p) {
-			headers_ = std::move(p.headers_);
-			body_ = std::move(p.body_);
-		}
 
+#if _MSC_VER >= 1800  // MSVC++ 12.0 _MSC_VER == 1800 (Visual Studio 2013)
+		http_parser(http_parser &&p) : headers_(std::move(p.headers_)), body_(std::move(p.body_))
+		{
+		}
+#else
+		http_parser(http_parser &&p) : headers_(std::move(p.headers_)) 
+		{
+			body_ << p.body_.rdbuf();
+		}
+#endif
 		header_t& header()
 		{
 			return headers_;
@@ -321,7 +328,6 @@ namespace GLASS {
 
 			auto async_read_until_handler = [this](const boost::system::error_code &err, std::size_t len)
 			{
-				int nRecv = response_.size();
 				// close 
 				if (err) {
 					close();
