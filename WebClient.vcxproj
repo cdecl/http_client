@@ -49,6 +49,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <LibraryPath>D:\Library\boost\stage\lib;$(LibraryPath)</LibraryPath>
+    <Linkage-openssl>static</Linkage-openssl>
+    <Linkage-zlib>static</Linkage-zlib>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
