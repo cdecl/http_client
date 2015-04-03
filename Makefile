@@ -4,7 +4,7 @@ LD_LIBS = -pthread -lboost_system -lboost_regex -lssl -lcrypto
 # -ltcmalloc_minimal 
 
 EXEC = http_client
-SOURCES = $(wildcard *.cpp)
+SOURCES = $(wildcard *.cpp) lib/json11.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 
 # Main target
