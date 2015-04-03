@@ -51,6 +51,7 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 #include <vector>
 #include <map>
 #include <memory>
@@ -207,6 +208,43 @@ public:
      */
     typedef std::initializer_list<std::pair<std::string, Type>> shape;
     bool has_shape(const shape & types, std::string & err) const;
+
+	
+	// short expression
+	int i() const {
+		return int_value();
+	}
+
+	double d() const {
+		return number_value();
+	}
+
+	bool b() const {
+		return bool_value();
+	}
+	const std::string& s() const {
+		return string_value();
+	}
+
+	const array& a() const {
+		return array_items();
+	}
+
+	const object &o() const {
+		return object_items();
+	}
+
+	// simple key selector 
+	const Json select(const std::string& sel, const char delim = ' ') const {
+		std::istringstream is(sel);
+		std::string s;
+		Json json = *this;
+
+		while (std::getline(is, s, delim)) {
+			if (!s.empty()) json = json[s];
+		}
+		return std::move(json);
+	}
 
 private:
     std::shared_ptr<JsonValue> m_ptr;
